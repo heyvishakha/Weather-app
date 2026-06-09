@@ -1,3 +1,9 @@
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    getWeather();
+  }
+}
+
 async function getWeather() {
   const city = document.getElementById("cityInput").value.trim();
   const result = document.getElementById("weatherResult");
@@ -25,8 +31,30 @@ async function getWeather() {
 
     let emoji = "☀️";
 
-    if (data.weather[0].main === "Clouds") emoji = "☁️";
-    if (data.weather[0].main === "Rain") emoji = "🌧️";
+    switch (data.weather[0].main) {
+      case "Clouds":
+        emoji = "☁️";
+        document.body.style.background =
+          "linear-gradient(135deg,#bdc3c7,#2c3e50)";
+        break;
+
+      case "Rain":
+        emoji = "🌧️";
+        document.body.style.background =
+          "linear-gradient(135deg,#141e30,#243b55)";
+        break;
+
+      case "Snow":
+        emoji = "❄️";
+        document.body.style.background =
+          "linear-gradient(135deg,#e6dada,#274046)";
+        break;
+
+      default:
+        emoji = "☀️";
+        document.body.style.background =
+          "linear-gradient(135deg,#74ebd5,#ACB6E5)";
+    }
 
     result.innerHTML = `
       <div class="weather-card">
@@ -35,6 +63,7 @@ async function getWeather() {
         <p>${emoji} ${data.weather[0].main}</p>
 
         <div class="details">
+
           <div class="detail-card">
             <h4>💧 Humidity</h4>
             <p>${data.main.humidity}%</p>
@@ -54,6 +83,7 @@ async function getWeather() {
             <h4>📈 Pressure</h4>
             <p>${data.main.pressure} hPa</p>
           </div>
+
         </div>
       </div>
     `;
@@ -61,4 +91,4 @@ async function getWeather() {
     result.innerHTML = "<p>Error loading weather ❌</p>";
     console.log(error);
   }
-}
+}}
