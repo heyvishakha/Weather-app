@@ -1,54 +1,81 @@
 async function getWeather() {
+const city = document.getElementById("cityInput").value.trim();
+const result = document.getElementById("weatherResult");
 
-  let city = document.getElementById("cityInput").value;
-  let result = document.getElementById("weatherResult");
+if (!city) {
+result.innerHTML = "<p>Enter a city name 😒</p>";
+return;
+}
 
-  if(city === ""){
-    result.innerText = "Enter city first 😒";
-    return;
-  }
+result.innerHTML = "<p>Loading...</p>";
 
-  let apiKey = "YOUR_API_KEY";
+const apiKey = "5913e31fdf174d4c50968a7b425a1395";
 
-  let url =
-  `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+try {
+const response = await fetch(
+`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+);
 
-  let response = await fetch(url);
-  let data = await response.json();
+```
+const data = await response.json();
 
-  let emoji = "☀️";
+if (data.cod != 200) {
+  result.innerHTML = "<p>City not found ❌</p>";
+  return;
+}
 
-  if(data.weather[0].main === "Clouds") emoji = "☁️";
-  if(data.weather[0].main === "Rain") emoji = "🌧️";
+let emoji = "☀️";
 
-  result.innerHTML = `
-    <div class="weather-card">
-      <h2>${data.name}</h2>
-      <h1>${data.main.temp}°C</h1>
-      <p>${emoji} ${data.weather[0].main}</p>
+if (data.weather[0].main === "Clouds") emoji = "☁️";
+else if (data.weather[0].main === "Rain") emoji = "🌧️";
+else if (data.weather[0].main === "Snow") emoji = "❄️";
+else if (data.weather[0].main === "Thunderstorm") emoji = "⛈️";
 
-      <div class="details">
-        <div class="detail-card">
-          <h4>💧 Humidity</h4>
-          <p>${data.main.humidity}%</p>
-        </div>
+if (data.weather[0].main === "Clear") {
+  document.body.style.background =
+    "linear-gradient(135deg,#56ccf2,#2f80ed)";
+} else if (data.weather[0].main === "Clouds") {
+  document.body.style.background =
+    "linear-gradient(135deg,#bdc3c7,#2c3e50)";
+} else if (data.weather[0].main === "Rain") {
+  document.body.style.background =
+    "linear-gradient(135deg,#141e30,#243b55)";
+}
 
-        <div class="detail-card">
-          <h4>🌬 Wind</h4>
-          <p>${data.wind.speed} m/s</p>
-        </div>
+result.innerHTML = `
+  <div class="weather-card">
+    <h2>${data.name}</h2>
+    <h1>${data.main.temp}°C</h1>
+    <p>${emoji} ${data.weather[0].main}</p>
 
-        <div class="detail-card">
-          <h4>🌡 Feels Like</h4>
-          <p>${data.main.feels_like}°C</p>
-        </div>
+    <div class="details">
+      <div class="detail-card">
+        <h4>💧 Humidity</h4>
+        <p>${data.main.humidity}%</p>
+      </div>
 
-        <div class="detail-card">
-          <h4>📈 Pressure</h4>
-          <p>${data.main.pressure} hPa</p>
-        </div>
+      <div class="detail-card">
+        <h4>🌬 Wind</h4>
+        <p>${data.wind.speed} m/s</p>
+      </div>
+
+      <div class="detail-card">
+        <h4>🌡 Feels Like</h4>
+        <p>${data.main.feels_like}°C</p>
+      </div>
+
+      <div class="detail-card">
+        <h4>📈 Pressure</h4>
+        <p>${data.main.pressure} hPa</p>
       </div>
     </div>
-  `;
+  </div>
+`;
+```
+
+} catch (error) {
+result.innerHTML = "<p>Something went wrong ❌</p>";
+console.error(error);
+}
 }
 `;
