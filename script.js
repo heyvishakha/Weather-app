@@ -1,33 +1,54 @@
-result.innerHTML = `
+async function getWeather() {
 
-  <div class="weather-card">
-    <h2>${data.name}</h2>
-    <h1>${data.main.temp}°C</h1>
-    <p>${emoji} ${data.weather[0].main}</p>
+  let city = document.getElementById("cityInput").value;
+  let result = document.getElementById("weatherResult");
 
-```
-<div class="details">
-  <div class="detail-card">
-    <h4>💧 Humidity</h4>
-    <p>${data.main.humidity}%</p>
-  </div>
+  if(city === ""){
+    result.innerText = "Enter city first 😒";
+    return;
+  }
 
-  <div class="detail-card">
-    <h4>🌬 Wind</h4>
-    <p>${data.wind.speed} m/s</p>
-  </div>
+  let apiKey = "YOUR_API_KEY";
 
-  <div class="detail-card">
-    <h4>🌡 Feels Like</h4>
-    <p>${data.main.feels_like}°C</p>
-  </div>
+  let url =
+  `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-  <div class="detail-card">
-    <h4>📈 Pressure</h4>
-    <p>${data.main.pressure} hPa</p>
-  </div>
-</div>
-```
+  let response = await fetch(url);
+  let data = await response.json();
 
-  </div>
+  let emoji = "☀️";
+
+  if(data.weather[0].main === "Clouds") emoji = "☁️";
+  if(data.weather[0].main === "Rain") emoji = "🌧️";
+
+  result.innerHTML = `
+    <div class="weather-card">
+      <h2>${data.name}</h2>
+      <h1>${data.main.temp}°C</h1>
+      <p>${emoji} ${data.weather[0].main}</p>
+
+      <div class="details">
+        <div class="detail-card">
+          <h4>💧 Humidity</h4>
+          <p>${data.main.humidity}%</p>
+        </div>
+
+        <div class="detail-card">
+          <h4>🌬 Wind</h4>
+          <p>${data.wind.speed} m/s</p>
+        </div>
+
+        <div class="detail-card">
+          <h4>🌡 Feels Like</h4>
+          <p>${data.main.feels_like}°C</p>
+        </div>
+
+        <div class="detail-card">
+          <h4>📈 Pressure</h4>
+          <p>${data.main.pressure} hPa</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
 `;
