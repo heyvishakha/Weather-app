@@ -20,7 +20,6 @@ const response = await fetch(
 `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5913e31fdf174d4c50968a7b425a1395&units=metric`
 );
 
-```
 const data = await response.json();
 
 if (data.cod != 200) {
@@ -36,8 +35,8 @@ result.innerHTML = `
   <p>Wind: ${data.wind.speed} m/s</p>
   <p>Feels Like: ${Math.round(data.main.feels_like)}°C</p>
   <p>Pressure: ${data.main.pressure} hPa</p>
-`;
-```
+;
+
 
 } catch (error) {
 result.innerHTML = "<p>Error loading weather ❌</p>";
