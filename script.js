@@ -35,7 +35,7 @@ result.innerHTML = `
   <p>Wind: ${data.wind.speed} m/s</p>
   <p>Feels Like: ${Math.round(data.main.feels_like)}°C</p>
   <p>Pressure: ${data.main.pressure} hPa</p>
-;
+`;
 
 
 } catch (error) {
