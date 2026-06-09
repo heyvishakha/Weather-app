@@ -1,3 +1,4 @@
+alert("NEW SCRIPT LOADED");
 const searchBtn = document.getElementById("searchBtn");
 const cityInput = document.getElementById("cityInput");
 
